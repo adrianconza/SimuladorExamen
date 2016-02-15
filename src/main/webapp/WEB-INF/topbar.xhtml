@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+	<div id="layout-topbar" class="ShadowGray">
+		<div id="layout-topbar-indent">
+			<a href="home.jsf"><h:graphicImage name="images/LOGO.png"
+					styleClass="Fleft" library="simuladorexamen-layout" id="logo"
+					class="Fleft" /></a> <a href="#" id="mobile-menu-button-gray"
+				class="BordRad3 white ShowOnMobile"><i class="fa fa-caret-down"></i>
+				Top Menú</a>
+
+			<ul id="layout-topbar-menu">
+
+				<li><a href="/SimuladorExamen/views/publicas/logout.jsf"
+					class="Animated05"><i class="fa fa-sign-out"></i> Salir</a></li>
+				<li class="fa fa-ellipsis-v menu-separator"></li>
+				<li><a class="Animated05 CursPointer"> <i
+						class="fa fa-user"></i>Bienvenid@: <h:outputText
+							value="#{loginBean.usuario.email}" /> <i
+						class="Fs14 Fright ShowOnMobile"></i>
+				</a></li>
+			</ul>
+		</div>
+	</div>
+
+</ui:composition>

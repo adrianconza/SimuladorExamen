@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+	<ui:define name="content">
+		<div class="layout-portlets-box">
+			<div class="Container100">
+				<div class="ContainerIndent TexAlCenter">
+					<h1 class="BigTopic TexAlCenter">Examen Complexivo - Parte
+						Teórica</h1>
+					<h:form>
+						<p:outputLabel value="Su Calificación es"
+							styleClass="DispBlock FontBold Fs30 TexAlCenter" />
+						<p:outputLabel value="#{calificacionBean.calificacion}"
+							styleClass="DispBlock FontBold Fs80 TexAlCenter green" />
+						<a href="escojerCarrera.jsf"
+							class="DispBlock FontBold Fs30 TexAlCenter">
+							<p>Para regresar al segundo intento de click aquí</p>
+						</a>
+						<p:outputLabel
+							value="Para escoger el tema práctico diríjase al paso 4."
+							styleClass="DispBlock FontBold Fs30 TexAlCenter" />
+					</h:form>
+				</div>
+			</div>
+		</div>
+
+	</ui:define>
+
+</ui:composition>

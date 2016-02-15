@@ -1,0 +1,137 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+	<ui:define name="content">
+		<div class="layout-portlets-box BgcWhite">
+			<div class="Container100">
+				<div class="ContainerIndent">
+
+					<p class="TexAlCenter Fs24 FontBold ColorExamen Margin0">Simulador
+						Examen Complexivo - Parte Teórica</p>
+					<div class="EmptyBox20"></div>
+					<h:form id="formTimer">
+						<div id="datosIngreso" class="divDatosIzq50">
+							<p:fragment autoUpdate="true">
+								<ul class="Margin0 TexAlCenter">
+									<li class="fa fa-history DispInlBlock Fs22 ColorExamen"></li>
+									<li class="DispInlBlock Fs22 ColorExamen">Tiempo Restante:</li>
+									<li class="DispInlBlock"><p:outputLabel id="cronometro"
+											value="" styleClass="Fs22 espacio ColorExamen" /></li>
+									<li class="DispInlBlock Fs22 ColorExamen">S</li>
+								</ul>
+							</p:fragment>
+						</div>
+						<div id="tablaIngreso" class="divDatosDer50">
+							<ul class="Margin0 TexAlCenter">
+								<li class="fa fa-th-list DispInlBlock Fs22 ColorExamen"></li>
+								<li class="DispInlBlock Fs22 ColorExamen">Pregunta</li>
+								<li class="DispInlBlock"><p:outputLabel
+										value="#{simuladorExamenBean.numPregunta+1}"
+										styleClass="Fs22 FontBold ColorExamen" /></li>
+								<li class="DispInlBlock Fs22 ColorExamen">de</li>
+								<li class="DispInlBlock"><p:outputLabel
+										value="#{simuladorExamenBean.preguntas}"
+										styleClass="Fs22 ColorExamen" /></li>
+								<li class="DispInlBlock Fs22 ColorExamen">preguntas sin
+									contestar</li>
+							</ul>
+						</div>
+						<p:outputLabel id="timer" value="#{simuladorExamenBean.tiempo}"
+							styleClass="DispNone" />
+						<p:commandButton id="btnTimer" value="Tiempo"
+							actionListener="#{simuladorExamenBean.tiempoPregunta}"
+							oncomplete="obtenerTiempo();"
+							update="formTimer, :formPregunta, :formRespuesta"
+							styleClass="DispNone" />
+						<div class="TexAlCenter Margin20BotTop">
+							<p:commandButton id="saltarPreRep" value="Saltar Pregunta"
+								icon="fa fa-repeat black"
+								oncomplete="successPregunta(xhr, status, args)"
+								actionListener="#{simuladorExamenBean.saltarPregunta}"
+								update="formTimer, :formPregunta, :formRespuesta, :formImgEnunciado, :formImgRespuestas"
+								styleClass="Margin1emRight GrayButton" />
+
+							<p:commandButton id="updPreRep" value="Siguiente Pregunta"
+								icon="fa fa-check-square-o black"
+								oncomplete="successPregunta(xhr, status, args)"
+								actionListener="#{simuladorExamenBean.guardarRespuesta}"
+								update="formTimer, :mensaje, :formPregunta, :formRespuesta, :formImgEnunciado, :formImgRespuestas"
+								styleClass="GrayButton" />
+						</div>
+					</h:form>
+					<div class="Seperator"></div>
+					<div class="divDatosIzq50">
+						<h:form id="formPregunta">
+							<p:outputLabel value="#{simuladorExamenBean.pregunta.enunciado}"
+								styleClass="DispBlock Fs24 FontBold ColorExamen" escape="false" />
+						</h:form>
+					</div>
+					<div class="divDatosDer50">
+						<h:form id="formImgEnunciado">
+							<ui:fragment id="fragEnunciado"
+								rendered="#{simuladorExamenBean.muetraImagenEnunciado}">
+								<div class="DivImagenEnunciado">
+									<p:graphicImage id="imgEnunciado" cache="false"
+										styleClass="ImagenPregunta"
+										value="#{simuladorExamenBean.imagenEnunciado}" />
+								</div>
+							</ui:fragment>
+						</h:form>
+					</div>
+					<div class="EmptyBox5"></div>
+					<h:form id="formImgRespuestas">
+						<ui:fragment
+							rendered="#{simuladorExamenBean.muetraImagenesPregunta}">
+							<div class="divDatosIzq50">
+								<div class="DivImagen">
+									<p:outputLabel value="#{simuladorExamenBean.literal1}"
+										styleClass="Literal" />
+									<p:graphicImage id="img1" styleClass="ImagenPregunta"
+										cache="false" value="#{simuladorExamenBean.imagen1}" />
+								</div>
+								<div class="DivImagen">
+									<p:outputLabel value="#{simuladorExamenBean.literal2}"
+										styleClass="Literal" />
+									<p:graphicImage id="img2" styleClass="ImagenPregunta"
+										cache="false" value="#{simuladorExamenBean.imagen2}" />
+								</div>
+							</div>
+							<div class="divDatosDer50">
+								<div class="DivImagen">
+									<p:outputLabel value="#{simuladorExamenBean.literal3}"
+										styleClass="Literal" />
+									<p:graphicImage id="img3" styleClass="ImagenPregunta"
+										cache="false" value="#{simuladorExamenBean.imagen3}" />
+								</div>
+								<div class="DivImagen">
+									<p:outputLabel value="#{simuladorExamenBean.literal4}"
+										styleClass="Literal" />
+									<p:graphicImage id="img4" styleClass="ImagenPregunta"
+										cache="false" value="#{simuladorExamenBean.imagen4}" />
+								</div>
+							</div>
+						</ui:fragment>
+					</h:form>
+					<div class="EmptyBox20"></div>
+					<h:form id="formRespuesta">
+						<p:selectOneRadio id="btns" layout="grid" columns="1"
+							value="#{simuladorExamenBean.literal}" onchange="focusBtn()"
+							styleClass="Wid100 btns">
+							<f:selectItems
+								value="#{simuladorExamenBean.pregunta.posiblesRespuestas}"
+								var="pr" itemValue="#{pr.literal}"
+								itemLabel="#{pr.literal}. - #{pr.descripcion}" />
+							<p:ajax event="change" listener="#{simuladorExamenBean.cargarPR}" />
+						</p:selectOneRadio>
+						<div class="EmptyBox20"></div>
+					</h:form>
+				</div>
+			</div>
+		</div>
+
+	</ui:define>
+
+</ui:composition>
